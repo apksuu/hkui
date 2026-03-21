@@ -1,785 +1,305 @@
-<!DOCTYPE html><html lang="zh-CN">
+<!DOCTYPE html>
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>个人导航站</title>
-  <meta name="description" content="一个简洁、可搜索、可自定义的个人导航静态网页" />
-  <style>
-    :root {
-      --bg: #0b1020;
-      --bg-soft: #121935;
-      --panel: rgba(255, 255, 255, 0.08);
-      --panel-strong: rgba(255, 255, 255, 0.12);
-      --line: rgba(255, 255, 255, 0.12);
-      --text: #eef2ff;
-      --muted: #b9c1ea;
-      --accent: #7c9cff;
-      --accent-2: #5eead4;
-      --danger: #ff7b7b;
-      --shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
-      --radius-xl: 24px;
-      --radius-lg: 18px;
-      --radius-md: 14px;
-      --maxw: 1200px;
-    }* { box-sizing: border-box; }
-
-html, body {
-  margin: 0;
-  padding: 0;
-  min-height: 100%;
-  font-family: Inter, "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
-  color: var(--text);
-  background:
-    radial-gradient(circle at top left, rgba(124, 156, 255, 0.28), transparent 28%),
-    radial-gradient(circle at top right, rgba(94, 234, 212, 0.18), transparent 20%),
-    linear-gradient(180deg, #09101f 0%, #0b1020 100%);
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-.wrap {
-  width: min(calc(100% - 32px), var(--maxw));
-  margin: 0 auto;
-  padding: 28px 0 40px;
-}
-
-.hero {
-  display: grid;
-  grid-template-columns: 1.35fr 0.95fr;
-  gap: 18px;
-  align-items: stretch;
-  margin-bottom: 22px;
-}
-
-.panel {
-  background: var(--panel);
-  backdrop-filter: blur(18px);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-xl);
-  box-shadow: var(--shadow);
-}
-
-.hero-main {
-  padding: 28px;
-  position: relative;
-  overflow: hidden;
-}
-
-.hero-main::after {
-  content: "";
-  position: absolute;
-  right: -40px;
-  top: -30px;
-  width: 180px;
-  height: 180px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(124, 156, 255, 0.25), transparent 70%);
-  pointer-events: none;
-}
-
-.hero-sub {
-  padding: 22px;
-  display: grid;
-  gap: 14px;
-}
-
-.eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 12px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: var(--muted);
-  font-size: 13px;
-}
-
-h1 {
-  margin: 16px 0 10px;
-  font-size: clamp(30px, 5vw, 52px);
-  line-height: 1.04;
-  letter-spacing: -0.03em;
-}
-
-.subtitle {
-  margin: 0 0 22px;
-  color: var(--muted);
-  font-size: 15px;
-  line-height: 1.8;
-  max-width: 720px;
-}
-
-.search-box {
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
-.input,
-.select,
-.btn,
-.link-form input {
-  border: 1px solid rgba(255,255,255,0.12);
-  outline: none;
-  color: var(--text);
-  background: rgba(255,255,255,0.08);
-  border-radius: 14px;
-  transition: 0.2s ease;
-}
-
-.input,
-.select {
-  min-height: 48px;
-  padding: 0 14px;
-  font-size: 15px;
-}
-
-.input {
-  flex: 1 1 360px;
-}
-
-.select {
-  min-width: 150px;
-}
-
-.input:focus,
-.select:focus,
-.btn:hover,
-.link-form input:focus {
-  border-color: rgba(124, 156, 255, 0.65);
-  box-shadow: 0 0 0 4px rgba(124, 156, 255, 0.12);
-}
-
-.btn {
-  min-height: 48px;
-  padding: 0 16px;
-  cursor: pointer;
-  font-weight: 700;
-}
-
-.btn.primary {
-  background: linear-gradient(135deg, var(--accent), #96a9ff);
-  color: white;
-  border: none;
-}
-
-.btn.ghost {
-  background: rgba(255,255,255,0.05);
-}
-
-.stats {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
-}
-
-.stat {
-  padding: 16px;
-  border-radius: var(--radius-lg);
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.08);
-}
-
-.stat .label {
-  display: block;
-  color: var(--muted);
-  font-size: 13px;
-  margin-bottom: 8px;
-}
-
-.stat strong {
-  font-size: 22px;
-}
-
-.clock {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 10px;
-  padding: 16px;
-  border-radius: var(--radius-lg);
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.08);
-}
-
-.clock-time {
-  font-size: 28px;
-  font-weight: 800;
-  letter-spacing: 0.02em;
-}
-
-.section-title {
-  margin: 26px 0 14px;
-  font-size: 22px;
-}
-
-details.group {
-  margin-bottom: 14px;
-  border-radius: var(--radius-xl);
-  overflow: hidden;
-  background: var(--panel);
-  border: 1px solid var(--line);
-  box-shadow: var(--shadow);
-}
-
-details.group[open] {
-  background: var(--panel-strong);
-}
-
-summary.group-head {
-  list-style: none;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 18px 20px;
-  user-select: none;
-}
-
-summary.group-head::-webkit-details-marker {
-  display: none;
-}
-
-.group-left {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.group-icon {
-  width: 42px;
-  height: 42px;
-  display: grid;
-  place-items: center;
-  border-radius: 14px;
-  background: rgba(124, 156, 255, 0.16);
-  font-size: 20px;
-}
-
-.group-meta h3 {
-  margin: 0 0 4px;
-  font-size: 18px;
-}
-
-.group-meta p {
-  margin: 0;
-  color: var(--muted);
-  font-size: 13px;
-}
-
-.group-count {
-  color: var(--muted);
-  font-size: 14px;
-}
-
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 14px;
-  padding: 0 20px 20px;
-}
-
-.card {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding: 18px;
-  min-height: 150px;
-  border-radius: 18px;
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.08);
-  transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease;
-}
-
-.card:hover {
-  transform: translateY(-4px);
-  border-color: rgba(124, 156, 255, 0.45);
-  background: rgba(255,255,255,0.09);
-}
-
-.card-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-}
-
-.badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  width: fit-content;
-  padding: 7px 10px;
-  border-radius: 999px;
-  color: #d9e0ff;
-  font-size: 12px;
-  background: rgba(124, 156, 255, 0.14);
-  border: 1px solid rgba(124, 156, 255, 0.2);
-}
-
-.title {
-  font-size: 18px;
-  font-weight: 800;
-  letter-spacing: -0.02em;
-}
-
-.desc {
-  color: var(--muted);
-  font-size: 14px;
-  line-height: 1.7;
-  flex: 1;
-}
-
-.url {
-  color: #9fb0ff;
-  font-size: 12px;
-  word-break: break-all;
-  opacity: 0.9;
-}
-
-.card-actions {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-.mini-btn {
-  border: 1px solid rgba(255,255,255,0.12);
-  border-radius: 12px;
-  min-height: 36px;
-  padding: 0 12px;
-  background: rgba(255,255,255,0.06);
-  color: var(--text);
-  cursor: pointer;
-  font-weight: 600;
-}
-
-.mini-btn.danger {
-  color: #ffd6d6;
-  border-color: rgba(255, 123, 123, 0.26);
-  background: rgba(255, 123, 123, 0.1);
-}
-
-.toolbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  margin: 20px 0 14px;
-  flex-wrap: wrap;
-}
-
-.toolbar p {
-  margin: 0;
-  color: var(--muted);
-  font-size: 14px;
-}
-
-.custom-panel {
-  padding: 18px;
-  margin-top: 18px;
-}
-
-.custom-panel h3 {
-  margin: 0 0 8px;
-  font-size: 20px;
-}
-
-.custom-panel p {
-  margin: 0 0 16px;
-  color: var(--muted);
-  font-size: 14px;
-  line-height: 1.7;
-}
-
-.link-form {
-  display: grid;
-  grid-template-columns: 1fr 1.3fr 1fr auto;
-  gap: 12px;
-}
-
-.link-form input {
-  min-height: 46px;
-  padding: 0 14px;
-  font-size: 14px;
-}
-
-.empty {
-  padding: 32px 16px;
-  text-align: center;
-  color: var(--muted);
-  border: 1px dashed rgba(255,255,255,0.15);
-  border-radius: 18px;
-  background: rgba(255,255,255,0.04);
-}
-
-.footer {
-  margin-top: 30px;
-  color: var(--muted);
-  text-align: center;
-  font-size: 13px;
-}
-
-.hide {
-  display: none !important;
-}
-
-@media (max-width: 980px) {
-  .hero {
-    grid-template-columns: 1fr;
-  }
-
-  .link-form {
-    grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 640px) {
-  .wrap {
-    width: min(calc(100% - 20px), var(--maxw));
-    padding-top: 18px;
-  }
-
-  .hero-main,
-  .hero-sub,
-  .custom-panel {
-    padding: 16px;
-  }
-
-  summary.group-head,
-  .grid {
-    padding-left: 14px;
-    padding-right: 14px;
-  }
-
-  .grid {
-    padding-bottom: 14px;
-  }
-
-  .clock-time {
-    font-size: 24px;
-  }
-}
-
-  </style>
+  <meta name="description" content="个人导航站 Pro，多文件静态版，支持搜索、收藏、导入导出、天气和 GitHub 面板。" />
+  <title>个人导航站 Pro</title>
+  <link rel="preconnect" href="https://api.github.com" crossorigin>
+  <link rel="preconnect" href="https://geocoding-api.open-meteo.com" crossorigin>
+  <link rel="preconnect" href="https://api.open-meteo.com" crossorigin>
+  <link rel="stylesheet" href="./assets/css/reset.css" />
+  <link rel="stylesheet" href="./assets/css/variables.css" />
+  <link rel="stylesheet" href="./assets/css/base.css" />
+  <link rel="stylesheet" href="./assets/css/layout.css" />
+  <link rel="stylesheet" href="./assets/css/components.css" />
+  <link rel="stylesheet" href="./assets/css/animations.css" />
+  <link rel="stylesheet" href="./assets/css/utilities.css" />
 </head>
 <body>
-  <div class="wrap">
-    <section class="hero">
-      <div class="panel hero-main">
-        <span class="eyebrow">⚡ 个人导航站</span>
-        <h1>把常用网站放到一个干净入口</h1>
-        <p class="subtitle">
-          这是一个纯静态、单文件、可本地保存的个人导航页。
-          支持搜索、分类折叠、自定义添加网址，数据保存在浏览器本地。
-        </p>
-        <div class="search-box">
-          <input id="searchInput" class="input" type="text" placeholder="搜索网站名称、描述、分类..." />
-          <select id="categoryFilter" class="select">
-            <option value="all">全部分类</option>
-          </select>
-          <button id="clearSearch" class="btn ghost">清空</button>
+  <div class="app-shell">
+    <aside class="sidebar glass">
+      <div class="brand-block">
+        <div class="brand-mark">N</div>
+        <div>
+          <h1 class="brand-title">Navigator Pro</h1>
+          <p class="brand-subtitle">静态多文件个人导航站</p>
         </div>
-      </div><div class="panel hero-sub">
-    <div class="clock">
-      <div>
-        <div style="color: var(--muted); font-size: 13px; margin-bottom: 6px;">当前时间</div>
-        <div id="clockTime" class="clock-time">--:--:--</div>
       </div>
-      <div id="clockDate" style="text-align:right; color: var(--muted); font-size: 14px; line-height: 1.7;"></div>
-    </div>
 
-    <div class="stats">
-      <div class="stat">
-        <span class="label">站点总数</span>
-        <strong id="totalCount">0</strong>
-      </div>
-      <div class="stat">
-        <span class="label">自定义站点</span>
-        <strong id="customCount">0</strong>
-      </div>
-      <div class="stat">
-        <span class="label">分类数量</span>
-        <strong id="groupCount">0</strong>
-      </div>
-      <div class="stat">
-        <span class="label">当前筛选结果</span>
-        <strong id="visibleCount">0</strong>
-      </div>
-    </div>
-  </div>
-</section>
+      <nav class="side-nav" aria-label="侧边功能区">
+        <button class="side-nav-item is-active" data-view="dashboard">总览</button>
+        <button class="side-nav-item" data-view="sites">网站库</button>
+        <button class="side-nav-item" data-view="favorites">收藏夹</button>
+        <button class="side-nav-item" data-view="recent">最近打开</button>
+        <button class="side-nav-item" data-view="settings">设置</button>
+      </nav>
 
-<section class="panel custom-panel">
-  <h3>添加你自己的网址</h3>
-  <p>名称、网址、分类都可以自定义。新增内容会自动保存在当前浏览器。</p>
-  <form id="linkForm" class="link-form">
-    <input id="siteName" type="text" placeholder="网站名称，例如 GitHub" required />
-    <input id="siteUrl" type="url" placeholder="https://example.com" required />
-    <input id="siteCategory" type="text" placeholder="分类，例如 开发" required />
-    <button class="btn primary" type="submit">添加</button>
-  </form>
-</section>
+      <section class="sidebar-card">
+        <div class="sidebar-card-head">
+          <h2>快捷键</h2>
+        </div>
+        <ul class="shortcut-list">
+          <li><kbd>/</kbd><span>聚焦搜索</span></li>
+          <li><kbd>Ctrl</kbd><kbd>K</kbd><span>命令面板</span></li>
+          <li><kbd>G</kbd><kbd>D</kbd><span>切到总览</span></li>
+          <li><kbd>G</kbd><kbd>S</kbd><span>切到网站库</span></li>
+          <li><kbd>Esc</kbd><span>关闭弹层</span></li>
+        </ul>
+      </section>
 
-<div class="toolbar">
-  <h2 class="section-title" style="margin: 0;">我的常用入口</h2>
-  <p>点击卡片可直接打开网站。自定义条目支持删除。</p>
-</div>
+      <section class="sidebar-card">
+        <div class="sidebar-card-head">
+          <h2>数据</h2>
+          <button id="resetAppBtn" class="text-btn danger">重置</button>
+        </div>
+        <p class="sidebar-muted">支持导出 JSON 备份，也支持一键恢复。</p>
+        <div class="stack-row">
+          <button id="exportStateBtn" class="soft-btn full">导出数据</button>
+          <label class="soft-btn full file-btn">
+            导入数据
+            <input id="importStateInput" type="file" accept="application/json" hidden />
+          </label>
+        </div>
+      </section>
+    </aside>
 
-<main id="groupsContainer"></main>
+    <main class="main-area">
+      <header class="topbar glass">
+        <div class="topbar-main">
+          <div>
+            <p class="eyebrow">可扩展前端架构</p>
+            <h2 class="page-title" id="pageTitle">总览</h2>
+          </div>
+          <div class="topbar-actions">
+            <button id="commandPaletteBtn" class="soft-btn icon-btn" aria-label="打开命令面板">⌘</button>
+            <button id="addSiteBtn" class="primary-btn">添加站点</button>
+          </div>
+        </div>
 
-<div class="footer">
-  纯 HTML + CSS + JavaScript 单文件页面，可直接部署到 GitHub Pages、Cloudflare Pages 或本地使用。
-</div>
+        <div class="search-grid">
+          <label class="search-field">
+            <span class="field-label">全局搜索</span>
+            <input id="globalSearchInput" type="text" placeholder="输入名称、描述、标签、分类" />
+          </label>
 
-  </div>  <script>
-    const builtinSites = [
-      {
-        category: '学习',
-        icon: '📚',
-        items: [
-          { name: 'Khan Academy', url: 'https://www.khanacademy.org/', desc: '数学、科学与基础课程学习。', tag: '学习' },
-          { name: 'Coursera', url: 'https://www.coursera.org/', desc: '系统课程与专项学习计划。', tag: '课程' },
-          { name: 'edX', url: 'https://www.edx.org/', desc: '大学课程与公开学习资源。', tag: '公开课' },
-          { name: 'Wolfram Alpha', url: 'https://www.wolframalpha.com/', desc: '数学、公式、推导与计算。', tag: '数学' }
-        ]
-      },
-      {
-        category: '开发',
-        icon: '💻',
-        items: [
-          { name: 'GitHub', url: 'https://github.com/', desc: '代码托管、项目协作、开源学习。', tag: '代码' },
-          { name: 'MDN Web Docs', url: 'https://developer.mozilla.org/', desc: '前端与 Web API 权威文档。', tag: '文档' },
-          { name: 'Stack Overflow', url: 'https://stackoverflow.com/', desc: '编程问题搜索与参考。', tag: '问答' },
-          { name: 'Rust Docs', url: 'https://doc.rust-lang.org/', desc: 'Rust 官方文档与标准库手册。', tag: 'Rust' }
-        ]
-      },
-      {
-        category: '效率',
-        icon: '⚙️',
-        items: [
-          { name: 'Notion', url: 'https://www.notion.so/', desc: '笔记、项目管理、知识库。', tag: '笔记' },
-          { name: 'Google Drive', url: 'https://drive.google.com/', desc: '云端文件管理与协作。', tag: '云盘' },
-          { name: 'Canva', url: 'https://www.canva.com/', desc: '快速做图、排版与演示。', tag: '设计' },
-          { name: 'Temp Mail', url: 'https://temp-mail.org/', desc: '临时邮箱工具。', tag: '工具' }
-        ]
-      },
-      {
-        category: 'AI',
-        icon: '🤖',
-        items: [
-          { name: 'ChatGPT', url: 'https://chatgpt.com/', desc: '通用 AI 助手与学习加速器。', tag: 'AI' },
-          { name: 'Perplexity', url: 'https://www.perplexity.ai/', desc: '检索增强问答与资料整理。', tag: '搜索' },
-          { name: 'Hugging Face', url: 'https://huggingface.co/', desc: '模型、数据集、AI 社区。', tag: '模型' },
-          { name: 'Claude', url: 'https://claude.ai/', desc: '长文本处理与写作辅助。', tag: '助手' }
-        ]
-      }
-    ];
+          <label class="search-field">
+            <span class="field-label">分类</span>
+            <select id="categorySelect"></select>
+          </label>
 
-    const STORAGE_KEY = 'personal-nav-custom-links-v1';
+          <label class="search-field">
+            <span class="field-label">排序</span>
+            <select id="sortSelect">
+              <option value="smart">智能排序</option>
+              <option value="name-asc">名称 A-Z</option>
+              <option value="name-desc">名称 Z-A</option>
+              <option value="updated">最近更新</option>
+              <option value="opens">打开次数</option>
+            </select>
+          </label>
 
-    const groupsContainer = document.getElementById('groupsContainer');
-    const searchInput = document.getElementById('searchInput');
-    const categoryFilter = document.getElementById('categoryFilter');
-    const clearSearch = document.getElementById('clearSearch');
-    const linkForm = document.getElementById('linkForm');
-    const siteName = document.getElementById('siteName');
-    const siteUrl = document.getElementById('siteUrl');
-    const siteCategory = document.getElementById('siteCategory');
+          <div class="chip-group" id="filterChips" aria-label="过滤条件">
+            <button class="chip is-active" data-filter="all">全部</button>
+            <button class="chip" data-filter="builtin">内置</button>
+            <button class="chip" data-filter="custom">自定义</button>
+            <button class="chip" data-filter="pinned">置顶</button>
+            <button class="chip" data-filter="favorite">收藏</button>
+          </div>
+        </div>
+      </header>
 
-    const totalCountEl = document.getElementById('totalCount');
-    const customCountEl = document.getElementById('customCount');
-    const groupCountEl = document.getElementById('groupCount');
-    const visibleCountEl = document.getElementById('visibleCount');
-    const clockTime = document.getElementById('clockTime');
-    const clockDate = document.getElementById('clockDate');
-
-    function getCustomLinks() {
-      try {
-        return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
-      } catch {
-        return [];
-      }
-    }
-
-    function setCustomLinks(data) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-    }
-
-    function normalizeUrl(url) {
-      const trimmed = url.trim();
-      if (!/^https?:\/\//i.test(trimmed)) return `https://${trimmed}`;
-      return trimmed;
-    }
-
-    function buildAllGroups() {
-      const customs = getCustomLinks();
-      const map = new Map();
-
-      for (const group of builtinSites) {
-        map.set(group.category, {
-          category: group.category,
-          icon: group.icon,
-          items: group.items.map(item => ({ ...item, custom: false }))
-        });
-      }
-
-      for (const item of customs) {
-        const category = item.category || '自定义';
-        if (!map.has(category)) {
-          map.set(category, { category, icon: '⭐', items: [] });
-        }
-        map.get(category).items.push({ ...item, custom: true, tag: '自定义' });
-      }
-
-      return [...map.values()].sort((a, b) => a.category.localeCompare(b.category, 'zh-CN'));
-    }
-
-    function populateCategoryFilter(groups) {
-      const current = categoryFilter.value;
-      const options = ['<option value="all">全部分类</option>'];
-      for (const group of groups) {
-        options.push(`<option value="${escapeHtml(group.category)}">${escapeHtml(group.category)}</option>`);
-      }
-      categoryFilter.innerHTML = options.join('');
-      if ([...categoryFilter.options].some(o => o.value === current)) {
-        categoryFilter.value = current;
-      }
-    }
-
-    function escapeHtml(str = '') {
-      return str
-        .replaceAll('&', '&amp;')
-        .replaceAll('<', '&lt;')
-        .replaceAll('>', '&gt;')
-        .replaceAll('"', '&quot;')
-        .replaceAll("'", '&#39;');
-    }
-
-    function matches(item, query, category) {
-      const text = `${item.name} ${item.desc || ''} ${item.tag || ''} ${item.category || ''}`.toLowerCase();
-      const okQuery = !query || text.includes(query);
-      const okCategory = category === 'all' || (item.category || '') === category;
-      return okQuery && okCategory;
-    }
-
-    function render() {
-      const groups = buildAllGroups();
-      populateCategoryFilter(groups);
-
-      const query = searchInput.value.trim().toLowerCase();
-      const category = categoryFilter.value;
-
-      let total = 0;
-      let visible = 0;
-
-      const html = groups.map((group, index) => {
-        const enrichedItems = group.items.map(item => ({ ...item, category: group.category }));
-        total += enrichedItems.length;
-        const filteredItems = enrichedItems.filter(item => matches(item, query, category));
-        visible += filteredItems.length;
-
-        const cardHtml = filteredItems.map(item => {
-          const idAttr = item.custom ? `data-id="${escapeHtml(item.id)}"` : '';
-          return `
-            <article class="card">
-              <div class="card-top">
-                <span class="badge">${escapeHtml(item.tag || group.category)}</span>
-              </div>
-              <div class="title">${escapeHtml(item.name)}</div>
-              <div class="desc">${escapeHtml(item.desc || '自定义站点')}</div>
-              <div class="url">${escapeHtml(item.url)}</div>
-              <div class="card-actions">
-                <a class="mini-btn" href="${escapeHtml(item.url)}" target="_blank" rel="noopener noreferrer">打开</a>
-                ${item.custom ? `<button class="mini-btn danger delete-btn" ${idAttr}>删除</button>` : ''}
-              </div>
-            </article>
-          `;
-        }).join('');
-
-        const open = index === 0 ? 'open' : '';
-        return `
-          <details class="group ${filteredItems.length ? '' : 'hide'}" ${open}>
-            <summary class="group-head">
-              <div class="group-left">
-                <div class="group-icon">${escapeHtml(group.icon)}</div>
-                <div class="group-meta">
-                  <h3>${escapeHtml(group.category)}</h3>
-                  <p>${filteredItems.length} / ${group.items.length} 个站点</p>
-                </div>
-              </div>
-              <div class="group-count">点击展开</div>
-            </summary>
-            <div class="grid">
-              ${cardHtml || '<div class="empty">当前分类没有匹配结果</div>'}
+      <section class="dashboard-grid" id="dashboardView">
+        <article class="hero-card glass span-2">
+          <div class="hero-copy">
+            <span class="eyebrow">你的控制中心</span>
+            <h3>把常用网站、天气、GitHub 信息和个人数据放在一个静态站里。</h3>
+            <p>
+              这是纯前端项目，不依赖构建工具。直接打开 index.html 即可运行。
+              站点状态、收藏、主题、最近访问和自定义内容都会保存到浏览器本地。
+            </p>
+            <div class="hero-actions">
+              <button id="jumpSitesBtn" class="primary-btn">查看网站库</button>
+              <button id="jumpSettingsBtn" class="soft-btn">打开设置</button>
             </div>
-          </details>
-        `;
-      }).join('');
+          </div>
+          <div class="hero-stats" id="heroStats"></div>
+        </article>
 
-      groupsContainer.innerHTML = html || '<div class="empty">没有可显示的站点</div>';
-      totalCountEl.textContent = total;
-      customCountEl.textContent = getCustomLinks().length;
-      groupCountEl.textContent = groups.length;
-      visibleCountEl.textContent = visible;
+        <article class="widget-card glass" id="weatherWidget">
+          <div class="widget-head">
+            <h3>天气面板</h3>
+            <button id="refreshWeatherBtn" class="text-btn">刷新</button>
+          </div>
+          <form id="weatherSearchForm" class="compact-form">
+            <input id="weatherCityInput" type="text" placeholder="城市名，例如 New York" />
+            <button class="soft-btn" type="submit">查询</button>
+            <button id="weatherGeoBtn" class="soft-btn" type="button">定位</button>
+          </form>
+          <div id="weatherContent" class="widget-body skeleton-lines"></div>
+        </article>
 
-      bindDeleteEvents();
-    }
+        <article class="widget-card glass" id="githubWidget">
+          <div class="widget-head">
+            <h3>GitHub 面板</h3>
+            <button id="refreshGithubBtn" class="text-btn">刷新</button>
+          </div>
+          <form id="githubSearchForm" class="compact-form">
+            <input id="githubUserInput" type="text" placeholder="GitHub 用户名" />
+            <button class="soft-btn" type="submit">加载</button>
+          </form>
+          <div id="githubContent" class="widget-body skeleton-lines"></div>
+        </article>
 
-    function bindDeleteEvents() {
-      document.querySelectorAll('.delete-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-          const id = btn.dataset.id;
-          const next = getCustomLinks().filter(item => item.id !== id);
-          setCustomLinks(next);
-          render();
-        });
-      });
-    }
+        <article class="widget-card glass span-2" id="insightWidget">
+          <div class="widget-head">
+            <h3>效率洞察</h3>
+            <button id="clearRecentBtn" class="text-btn danger">清空最近访问</button>
+          </div>
+          <div class="insight-layout">
+            <div>
+              <h4>热门分类</h4>
+              <div id="hotCategories"></div>
+            </div>
+            <div>
+              <h4>最近打开</h4>
+              <div id="recentSites"></div>
+            </div>
+            <div>
+              <h4>效率提醒</h4>
+              <div id="tipsBox"></div>
+            </div>
+          </div>
+        </article>
+      </section>
 
-    linkForm.addEventListener('submit', event => {
-      event.preventDefault();
-      const name = siteName.value.trim();
-      const url = normalizeUrl(siteUrl.value);
-      const category = siteCategory.value.trim() || '自定义';
+      <section class="view-section is-hidden" id="sitesView">
+        <div class="section-head">
+          <h3>网站库</h3>
+          <div class="stack-row">
+            <button id="collapseAllBtn" class="soft-btn">全部收起</button>
+            <button id="expandAllBtn" class="soft-btn">全部展开</button>
+          </div>
+        </div>
+        <div id="siteGroups" class="groups-stack"></div>
+      </section>
 
-      if (!name || !url || !category) return;
+      <section class="view-section is-hidden" id="favoritesView">
+        <div class="section-head">
+          <h3>收藏夹</h3>
+        </div>
+        <div id="favoritesGrid" class="site-grid"></div>
+      </section>
 
-      const next = getCustomLinks();
-      next.unshift({
-        id: crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random()}`,
-        name,
-        url,
-        category,
-        desc: '我自己添加的常用网址'
-      });
-      setCustomLinks(next);
-      linkForm.reset();
-      render();
-    });
+      <section class="view-section is-hidden" id="recentView">
+        <div class="section-head">
+          <h3>最近打开</h3>
+        </div>
+        <div id="recentGrid" class="site-grid"></div>
+      </section>
 
-    searchInput.addEventListener('input', render);
-    categoryFilter.addEventListener('change', render);
-    clearSearch.addEventListener('click', () => {
-      searchInput.value = '';
-      categoryFilter.value = 'all';
-      render();
-    });
+      <section class="view-section is-hidden" id="settingsView">
+        <div class="settings-layout">
+          <article class="glass setting-card">
+            <h3>主题</h3>
+            <div class="theme-grid" id="themeGrid"></div>
+          </article>
 
-    function updateClock() {
-      const now = new Date();
-      clockTime.textContent = now.toLocaleTimeString('zh-CN', { hour12: false });
-      clockDate.innerHTML = `${now.toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' })}<br>${now.toLocaleDateString('zh-CN', { weekday: 'long' })}`;
-    }
+          <article class="glass setting-card">
+            <h3>主页偏好</h3>
+            <div class="setting-form">
+              <label>
+                <span>默认视图</span>
+                <select id="defaultViewSelect">
+                  <option value="dashboard">总览</option>
+                  <option value="sites">网站库</option>
+                  <option value="favorites">收藏夹</option>
+                  <option value="recent">最近打开</option>
+                </select>
+              </label>
+              <label>
+                <span>每组初始展开</span>
+                <select id="expandModeSelect">
+                  <option value="smart">智能</option>
+                  <option value="all">全部展开</option>
+                  <option value="none">全部收起</option>
+                </select>
+              </label>
+              <label class="switch-row">
+                <input id="showOnlyHttpsInput" type="checkbox" />
+                <span>优先显示 HTTPS 链接</span>
+              </label>
+            </div>
+          </article>
 
-    updateClock();
-    setInterval(updateClock, 1000);
-    render();
-  </script></body>
+          <article class="glass setting-card span-2">
+            <h3>说明</h3>
+            <ul class="info-list">
+              <li>这个项目基于原生 JavaScript 模块拆分，便于继续扩展。</li>
+              <li>天气模块使用 Open-Meteo 接口，默认不需要 API key。</li>
+              <li>GitHub 模块使用公共 REST 接口，匿名请求有速率限制，前端已做缓存。</li>
+              <li>定位天气依赖浏览器地理位置权限，并要求安全上下文或 localhost。</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <dialog id="siteDialog" class="modal-card">
+    <form method="dialog" class="modal-shell" id="siteFormDialog">
+      <header class="modal-head">
+        <h3 id="siteDialogTitle">添加站点</h3>
+        <button class="text-btn" value="cancel" aria-label="关闭">关闭</button>
+      </header>
+      <div class="modal-body form-grid">
+        <label>
+          <span>名称</span>
+          <input name="name" required />
+        </label>
+        <label>
+          <span>网址</span>
+          <input name="url" required />
+        </label>
+        <label>
+          <span>分类</span>
+          <input name="category" required />
+        </label>
+        <label>
+          <span>标签</span>
+          <input name="tag" />
+        </label>
+        <label class="span-2">
+          <span>描述</span>
+          <textarea name="description" rows="4"></textarea>
+        </label>
+        <label class="switch-row span-2">
+          <input name="pinned" type="checkbox" />
+          <span>添加后直接置顶</span>
+        </label>
+      </div>
+      <footer class="modal-foot">
+        <button class="soft-btn" value="cancel">取消</button>
+        <button id="saveSiteDialogBtn" class="primary-btn" value="default">保存</button>
+      </footer>
+    </form>
+  </dialog>
+
+  <dialog id="commandDialog" class="modal-card command-modal">
+    <form method="dialog" class="modal-shell">
+      <header class="modal-head">
+        <h3>命令面板</h3>
+        <button class="text-btn" value="cancel">关闭</button>
+      </header>
+      <div class="modal-body">
+        <input id="commandInput" class="command-input" placeholder="输入命令或搜索站点，例如 theme light / github openai" />
+        <div id="commandResults" class="command-results"></div>
+      </div>
+    </form>
+  </dialog>
+
+  <div id="toastStack" class="toast-stack" aria-live="polite" aria-atomic="true"></div>
+
+  <script type="module" src="./assets/js/app.js"></script>
+</body>
 </html>

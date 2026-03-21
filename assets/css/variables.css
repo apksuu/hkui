@@ -1,0 +1,87 @@
+:root {
+  --bg: #0b1020;
+  --bg-2: #111934;
+  --surface: rgba(255, 255, 255, 0.08);
+  --surface-2: rgba(255, 255, 255, 0.12);
+  --surface-3: rgba(255, 255, 255, 0.16);
+  --line: rgba(255, 255, 255, 0.12);
+  --line-strong: rgba(255, 255, 255, 0.2);
+  --text: #edf1ff;
+  --muted: #b9c2ef;
+  --accent: #88a4ff;
+  --accent-2: #55e3c1;
+  --accent-3: #ffc168;
+  --danger: #ff7b8c;
+  --warning: #ffd36e;
+  --success: #62dca2;
+  --shadow: 0 24px 80px rgba(0, 0, 0, 0.4);
+  --radius-xs: 10px;
+  --radius-sm: 14px;
+  --radius-md: 18px;
+  --radius-lg: 24px;
+  --radius-xl: 32px;
+  --gap-xs: 8px;
+  --gap-sm: 12px;
+  --gap-md: 16px;
+  --gap-lg: 20px;
+  --gap-xl: 28px;
+  --max-width: 1600px;
+  --font-stack: Inter, "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+}
+
+:root[data-theme='light'] {
+  --bg: #edf2ff;
+  --bg-2: #dfe7ff;
+  --surface: rgba(255, 255, 255, 0.7);
+  --surface-2: rgba(255, 255, 255, 0.84);
+  --surface-3: rgba(255, 255, 255, 0.94);
+  --line: rgba(19, 34, 84, 0.1);
+  --line-strong: rgba(19, 34, 84, 0.18);
+  --text: #162344;
+  --muted: #516081;
+  --accent: #5271ff;
+  --accent-2: #00a58e;
+  --accent-3: #cb8a1b;
+  --danger: #d84a63;
+  --warning: #a66a00;
+  --success: #147c55;
+  --shadow: 0 16px 40px rgba(78, 92, 136, 0.18);
+}
+
+:root[data-theme='violet'] {
+  --bg: #110f23;
+  --bg-2: #1b1835;
+  --surface: rgba(255, 255, 255, 0.08);
+  --surface-2: rgba(255, 255, 255, 0.12);
+  --surface-3: rgba(255, 255, 255, 0.15);
+  --line: rgba(255, 255, 255, 0.12);
+  --line-strong: rgba(255, 255, 255, 0.2);
+  --text: #f1eaff;
+  --muted: #ccc1ef;
+  --accent: #a078ff;
+  --accent-2: #60d8ff;
+  --accent-3: #f7c96c;
+  --danger: #ff7f9e;
+  --warning: #ffcf73;
+  --success: #73e5b2;
+  --shadow: 0 26px 80px rgba(7, 4, 20, 0.55);
+}
+
+:root[data-theme='forest'] {
+  --bg: #0d1712;
+  --bg-2: #15261c;
+  --surface: rgba(255, 255, 255, 0.07);
+  --surface-2: rgba(255, 255, 255, 0.1);
+  --surface-3: rgba(255, 255, 255, 0.13);
+  --line: rgba(255, 255, 255, 0.11);
+  --line-strong: rgba(255, 255, 255, 0.18);
+  --text: #effff6;
+  --muted: #bcd5c9;
+  --accent: #66d98e;
+  --accent-2: #97f4d5;
+  --accent-3: #f5cf73;
+  --danger: #ff8ea0;
+  --warning: #f4c24d;
+  --success: #7fe6b2;
+  --shadow: 0 24px 80px rgba(0, 0, 0, 0.4);
+}
